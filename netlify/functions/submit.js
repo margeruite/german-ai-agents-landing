@@ -61,12 +61,12 @@ const checkRateLimit = (ip) => {
   return true;
 };
 
-// CORS headers
-const corsHeaders = {
+// Common response headers
+const commonHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization, Accept',
   'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
-  'Access-Control-Allow-Credentials': 'true'
+  'Content-Type': 'application/json'
 };
 
 exports.handler = async (event) => {
@@ -75,8 +75,8 @@ exports.handler = async (event) => {
     return {
       statusCode: 200,
       headers: {
-        ...corsHeaders,
-        'Content-Length': '0',
+        ...commonHeaders,
+        'Content-Length': '0'
       },
       body: ''
     };
@@ -86,10 +86,7 @@ exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 200,
-      headers: {
-        ...corsHeaders,
-        'Content-Type': 'application/json'
-      },
+      headers: commonHeaders,
       body: JSON.stringify({ 
         success: false,
         error: 'Method Not Allowed' 
@@ -107,10 +104,7 @@ exports.handler = async (event) => {
     if (!checkRateLimit(clientIP)) {
       return {
         statusCode: 200,
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'application/json'
-        },
+        headers: commonHeaders,
         body: JSON.stringify({ 
           success: false,
           error: 'Too many requests. Please try again later.' 
@@ -125,10 +119,7 @@ exports.handler = async (event) => {
     } catch (e) {
       return {
         statusCode: 200,
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'application/json'
-        },
+        headers: commonHeaders,
         body: JSON.stringify({ 
           success: false,
           error: 'Invalid request format' 
@@ -141,10 +132,7 @@ exports.handler = async (event) => {
     if (validationErrors.length > 0) {
       return {
         statusCode: 200,
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'application/json'
-        },
+        headers: commonHeaders,
         body: JSON.stringify({ 
           success: false,
           error: 'Validation failed', 
@@ -176,19 +164,15 @@ exports.handler = async (event) => {
       throw new Error('Failed to save submission to database');
     }
 
-    // Success response with CORS headers
+    // Success response
     return {
       statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Content-Type': 'application/json'
-      },
+      headers: commonHeaders,
       body: JSON.stringify({ 
         success: true,
         message: 'Form submitted successfully',
         submission_id: data[0]?.id,
-        redirect: '/start'  // Add redirect URL that frontend expects
+        redirect: '/start'
       })
     };
 
@@ -196,12 +180,8 @@ exports.handler = async (event) => {
     console.error('Error processing submission:', error);
     
     return {
-      statusCode: 200, // Return 200 to prevent CORS issues
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Content-Type': 'application/json'
-      },
+      statusCode: 200,
+      headers: commonHeaders,
       body: JSON.stringify({ 
         success: false,
         error: 'Failed to process submission',
