@@ -55,7 +55,7 @@
       
     </section>
     <section class="why-matters">
-      <h2 class="fade-in-up">Why thousands of learners struggle – and how we fix it</h2>
+      <h2 class="fade-in-up">Learn smarter, not harder: The AI Advantage for Successful Students</h2>
       <div class="comparison">
         <div class="column ai-agents fade-in-up delay-200">
           <h3>German AI Agents</h3>
@@ -87,30 +87,18 @@
       <h2 class="fade-in-up">How it works</h2>
       <div class="steps-grid">
         <div class="step fade-in-up delay-100">
-          <div class="step-icon">
-            <img src="./images/icon-writing.svg" alt="Writing tasks" width="48" height="48">
-          </div>
           <span class="step-number">1</span>
-          <p>Complete 3 real writing tasks</p>
+          <p>Complete 5 real writing tasks</p>
         </div>
         <div class="step fade-in-up delay-200">
-          <div class="step-icon">
-            <img src="./images/icon-feedback.svg" alt="Instant feedback" width="48" height="48">
-          </div>
           <span class="step-number">2</span>
           <p>Get instant feedback – in your native language</p>
         </div>
         <div class="step fade-in-up delay-300">
-          <div class="step-icon">
-            <img src="./images/icon-brain.svg" alt="Strengths and weaknesses" width="48" height="48">
-          </div>
           <span class="step-number">3</span>
           <p>See your strengths and weaknesses</p>
         </div>
         <div class="step fade-in-up delay-400">
-          <div class="step-icon">
-            <img src="./images/icon-calendar.svg" alt="Learning plan" width="48" height="48">
-          </div>
           <span class="step-number">4</span>
           <p>Unlock your adaptive learning plan</p>
         </div>
@@ -122,72 +110,283 @@
     <section id="evaluation-form" class="evaluation-section fade-in-up">
   <a id="evaluation-form-top"></a>
   <h2>Start your free evaluation now</h2>
-  <form id="aiForm" class="evaluation-form" action="/.netlify/functions/submit" method="POST">
-    <div class="form-group fade-in-up delay-100">
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name" required autocomplete="name" placeholder="Your full name" />
+  <form id="aiForm" class="evaluation-form" action="/.netlify/functions/submit" method="POST" style="max-width: 500px; margin: 0 auto; padding: 2.5rem; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
+    <div id="form-message" class="form-message" style="display: none;"></div>
+    
+    <div class="form-group" style="margin-bottom: 1.5rem;">
+      <label for="name" style="display: block; font-size: 0.95rem; font-weight: 600; color: #1F2937; margin-bottom: 0.5rem;">Full Name</label>
+      <input type="text" id="name" name="name" required minlength="2" maxlength="100" 
+             style="width: 100%;
+                    padding: 12px 16px;
+                    font-size: 1rem;
+                    border: 2px solid #E5E7EB;
+                    border-radius: 8px;
+                    background-color: #FFFFFF;
+                    transition: all 0.2s ease;
+                    box-sizing: border-box;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                    font-family: 'Inter', sans-serif;">
     </div>
-    <div class="form-group fade-in-up delay-100">
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required autocomplete="email" placeholder="your.email@example.com" />
+    
+    <div class="form-group" style="margin-bottom: 1.5rem;">
+      <label for="email" style="display: block; font-size: 0.95rem; font-weight: 600; color: #1F2937; margin-bottom: 0.5rem;">Email</label>
+      <input type="email" id="email" name="email" required
+             style="width: 100%;
+                    padding: 12px 16px;
+                    font-size: 1rem;
+                    border: 2px solid #E5E7EB;
+                    border-radius: 8px;
+                    background-color: #FFFFFF;
+                    transition: all 0.2s ease;
+                    box-sizing: border-box;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                    font-family: 'Inter', sans-serif;">
     </div>
-    <div class="form-group fade-in-up delay-200">
-      <label for="level">German level</label>
-      <select id="level" name="level" required>
-        <option value="" disabled selected>Select your current level</option>
-        <option value="A2">A2</option>
-        <option value="B1">B1</option>
-        <option value="B2">B2</option>
-        <option value="C1">C1</option>
+    
+    <div class="form-group" style="margin-bottom: 1.5rem;">
+      <label for="level" style="display: block; font-size: 0.95rem; font-weight: 600; color: #1F2937; margin-bottom: 0.5rem;">Your German Level</label>
+      <select id="level" name="level" required
+              style="width: 100%;
+                     padding: 12px 16px;
+                     font-size: 1rem;
+                     border: 2px solid #E5E7EB;
+                     border-radius: 8px;
+                     background-color: #FFFFFF;
+                     appearance: none;
+                     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231F2937%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+                     background-repeat: no-repeat;
+                     background-position: right 12px top 50%;
+                     background-size: 12px auto;
+                     cursor: pointer;
+                     transition: all 0.2s ease;
+                     box-sizing: border-box;
+                     font-family: 'Inter', sans-serif;">
+        <option value="">Select your level</option>
+        <option value="A1">A1 - Beginner</option>
+        <option value="A2">A2 - Elementary</option>
+        <option value="B1">B1 - Intermediate</option>
+        <option value="B2">B2 - Upper Intermediate</option>
+        <option value="C1">C1 - Advanced</option>
+        <option value="C2">C2 - Mastery</option>
       </select>
     </div>
-    <div class="form-group fade-in-up delay-300">
-      <label for="native_language">Native language</label>
-      <input type="text" id="native_language" name="native_language" required placeholder="e.g., Mandarin, Russian, etc." />
+    
+    <div class="form-group" style="margin-bottom: 1.5rem;">
+      <label for="native_language" style="display: block; font-size: 0.95rem; font-weight: 600; color: #1F2937; margin-bottom: 0.5rem;">Native Language</label>
+      <input type="text" 
+             id="native_language" 
+             name="native_language" 
+             placeholder="e.g., Russian, Mandarin, Spanish" 
+             required
+             style="width: 100%;
+                    padding: 12px 16px;
+                    font-size: 1rem;
+                    border: 2px solid #E5E7EB;
+                    border-radius: 8px;
+                    background-color: #FFFFFF;
+                    transition: all 0.2s ease;
+                    box-sizing: border-box;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                    font-family: 'Inter', sans-serif;">
     </div>
-    <div class="form-group fade-in-up delay-200">
-      <label for="test_date">Test date</label>
-      <input type="date" id="test_date" name="test_date" required />
+    
+    <div class="form-group" style="margin-bottom: 1.5rem;">
+      <label for="test_date" style="display: block; font-size: 0.95rem; font-weight: 600; color: #1F2937; margin-bottom: 0.5rem;">When do you want to take the TestDaF exam?</label>
+      <input type="text" 
+             id="test_date" 
+             name="test_date" 
+             placeholder="e.g., in 3 months" 
+             required
+             style="width: 100%;
+                    padding: 12px 16px;
+                    font-size: 1rem;
+                    border: 2px solid #E5E7EB;
+                    border-radius: 8px;
+                    background-color: #FFFFFF;
+                    transition: all 0.2s ease;
+                    box-sizing: border-box;
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                    font-family: 'Inter', sans-serif;">
     </div>
-    <button type="submit" class="evaluation-cta fade-in-up delay-400">Start now</button>
+    
+    <style>
+      /* Focus styles for all form elements */
+      input:focus, select:focus {
+        outline: none;
+        border-color: #A14FFF !important;
+        box-shadow: 0 0 0 3px rgba(161, 79, 255, 0.2) !important;
+      }
+      
+      /* Hover state */
+      input:hover, select:hover {
+        border-color: #9CA3AF;
+      }
+      
+      /* Placeholder text */
+      ::placeholder {
+        color: #9CA3AF;
+        opacity: 1;
+        font-weight: 400;
+      }
+    </style>
+    <div class="form-actions">
+      <button type="submit" class="evaluation-cta fade-in-up delay-400">Start now</button>
+    </div>
   </form>
 <script>
-  const form = document.getElementById("aiForm");
+document.getElementById('aiForm').addEventListener('submit', async e => {
+  e.preventDefault(); // Verhindert das normale HTML-POST
 
-  form.addEventListener("submit", async function (e) {
-    // Show loading state
-    const submitBtn = this.querySelector('button[type="submit"]');
-    const originalBtnText = submitBtn.textContent;
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
+  const f = e.target;
+  const payload = {
+    name:            f.name.value,
+    level:           f.level.value,
+    native:          f.native_language.value,  // Mapping von deinem Feld
+    test_date:       f.test_date.value
+  };
+  console.log('→ Sende an Function:', payload);
 
-    // Store form data in session storage before submission
-    const formData = new FormData(form);
-    const formDataObj = Object.fromEntries(formData.entries());
-    Object.entries(formDataObj).forEach(([key, value]) => {
-      sessionStorage.setItem(key, value);
+  const res = await fetch('/.netlify/functions/submit', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload)
+  });
+  console.log('← HTTP Status:', res.status);
+
+  let json;
+  try {
+    json = await res.json();
+    console.log('← Response JSON:', json);
+  } catch(_){}
+
+  if (res.ok && json?.redirectUrl) {
+    window.location.href = json.redirectUrl;
+  } else {
+    alert('Senden fehlgeschlagen – sieh dir die Console an.');
+  }
+});
+</script>
+
+  <style>
+  .form-message {
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    display: none;
+  }
+  .form-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  .form-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+  button[disabled] {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById("aiForm");
+    const formMessage = document.getElementById("form-message");
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      
+      // Show loading state
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalBtnText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      
+      // Hide any previous messages
+      formMessage.style.display = 'none';
+
+      try {
+        // Get form data
+        const formData = new FormData(form);
+        const formDataObj = Object.fromEntries(formData.entries());
+        
+        // Store form data in session storage
+        Object.entries(formDataObj).forEach(([key, value]) => {
+          sessionStorage.setItem(key, value);
+        });
+
+        // Submit form data to Netlify function
+        const response = await fetch('/.netlify/functions/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formDataObj),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to submit form');
+        }
+
+
+        // Show success message
+        formMessage.textContent = 'Form submitted successfully! Redirecting...';
+        formMessage.className = 'form-message success';
+        formMessage.style.display = 'block';
+
+        // Redirect to success page
+        setTimeout(() => {
+          window.location.href = data.redirect || '/?form_submitted=true';
+        }, 1500);
+
+      } catch (error) {
+        console.error('Form submission error:', error);
+        
+        // Show error message
+        formMessage.textContent = error.message || 'An error occurred. Please try again.';
+        formMessage.className = 'form-message error';
+        formMessage.style.display = 'block';
+        
+        // Restore button state
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+        
+        // Scroll to error message
+        formMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     });
-    
-    // The form will submit to the Netlify function automatically
-    // No need for manual fetch with this approach
   });
   
-  // Optional: Handle Netlify form submission success
+  // Handle form submission success redirect
   if (window.location.search.includes('form_submitted=true')) {
     // Get data from session storage
     const name = sessionStorage.getItem('name');
     const level = sessionStorage.getItem('level');
-    const nativeLanguage = sessionStorage.getItem('native_language');
     const testDate = sessionStorage.getItem('test_date');
     
     // Redirect to start page with query params
     const query = new URLSearchParams({
       name: name || '',
       level: level || '',
-      native_language: nativeLanguage || '',
       test_date: testDate || ''
     }).toString();
     
+    // Clear the form data from session storage
+    sessionStorage.clear();
+    
+    // Redirect to the start page
     window.location.href = `/start?${query}`;
   }
 </script>
