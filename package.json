@@ -1,0 +1,14 @@
+{
+  "name": "german-ai-agents-landing",
+  "version": "1.0.0",
+  "description": "German AI Agents Landing Page",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}

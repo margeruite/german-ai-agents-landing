@@ -1,0 +1,18 @@
+<svg width="264" height="264" viewBox="0 0 264 264" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="10" y="10" width="180" height="220" rx="30" fill="#E1F5FE"/>
+<path d="M190 40L230 80L190 120V40Z" fill="#81D4FA"/>
+<rect x="40" y="60" width="120" height="16" rx="8" fill="#64B5F6"/>
+<rect x="40" y="100" width="140" height="16" rx="8" fill="#64B5F6"/>
+<rect x="40" y="140" width="120" height="16" rx="8" fill="#64B5F6"/>
+<rect x="40" y="180" width="80" height="16" rx="8" fill="#64B5F6"/>
+<path d="M230 80L190 40H40C23.4315 40 10 53.4315 10 70V210C10 226.569 23.4315 240 40 240H150C166.569 240 180 226.569 180 210V120L230 80Z" fill="#E1F5FE" fill-opacity="0.5"/>
+<path d="M230 80L190 40V70C190 86.5685 203.431 100 220 100H250L230 80Z" fill="#81D4FA"/>
+<path d="M250 100L230 80L190 120H220C236.569 120 250 106.569 250 90V100Z" fill="#81D4FA"/>
+<path d="M250 100L230 80L190 120H220C236.569 120 250 106.569 250 90V100Z" fill="#81D4FA"/>
+<rect x="190" y="120" width="100" height="140" rx="20" fill="#5E35B1" fill-opacity="0.6"/>
+<path d="M230 120L270 160L230 200V120Z" fill="#9575CD"/>
+<path d="M270 160L230 120V150C230 166.569 243.431 180 260 180H290L270 160Z" fill="#9575CD"/>
+<path d="M290 180L270 160L230 200H260C276.569 200 290 186.569 290 170V180Z" fill="#9575CD"/>
+<path d="M290 180L270 160L230 200H260C276.569 200 290 186.569 290 170V180Z" fill="#9575CD"/>
+<path d="M230 200L190 240L150 200H230Z" fill="#FF80AB"/>
+</svg>

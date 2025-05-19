@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard – German AI Agents</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-bg">
+  <header class="site-header">
+    <div class="container">
+      <div class="logo">
+        <a href="index.html">
+          <span class="logo-text">German<span class="logo-highlight">AI</span>Agents</span>
+        </a>
+      </div>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="dashboard.html" class="active">Dashboard</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a href="#" class="login-btn">Login</a>
+      </div>
+    </div>
+  </header>
+  <main class="dashboard-main">
+    <div class="dashboard-head">
+      <h1 class="dashboard-title">Welcome back, <span id="user-firstname">User</span>!</h1>
+      <p class="dashboard-subtext">Here’s your current progress and learning plan.</p>
+    </div>
+    <div class="dashboard-grid">
+      <div class="dashboard-card next-task">
+        <div class="dashboard-icon icon-task">✍️</div>
+        <h2 class="dashboard-card-title">Your next task</h2>
+        <div id="next-task" class="dashboard-card-content">Coming soon: write a short opinion paragraph on digital learning.</div>
+      </div>
+      <div class="dashboard-card learning-plan">
+        <div class="dashboard-icon icon-plan">📚</div>
+        <h2 class="dashboard-card-title">Your learning plan</h2>
+        <div id="learning-plan" class="dashboard-card-content">Week 2: Focus on argument structure and connectors.</div>
+        <a href="start.html?task=argument" class="dashboard-card-link">Go to chat with this task</a>
+      </div>
+      <div class="dashboard-card score-tracker">
+        <div class="dashboard-icon icon-score">📊</div>
+        <h2 class="dashboard-card-title">Your score tracker</h2>
+        <div id="score-tracker" class="dashboard-card-content">
+          Structure: 3/5 • Grammar: 4/5 • Clarity: 3/5
+          <div class="score-bar-group">
+            <div class="score-bar-label">Structure</div>
+            <div class="score-bar"><div class="score-bar-fill" style="width:60%"></div></div>
+            <div class="score-bar-label">Grammar</div>
+            <div class="score-bar"><div class="score-bar-fill" style="width:80%"></div></div>
+            <div class="score-bar-label">Clarity</div>
+            <div class="score-bar"><div class="score-bar-fill" style="width:60%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dashboard-cta-row">
+      <a href="pricing.html" class="dashboard-cta">Want to upgrade? → View Premium Features</a>
+    </div>
+  </main>
+</body>
+</html>
