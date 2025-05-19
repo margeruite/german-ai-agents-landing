@@ -1,43 +1,38 @@
-const fetch = require('node-fetch');
+const { createClient } = require('@supabase/supabase-js')
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+)
 
 exports.handler = async (event) => {
-  // Only allow POST requests
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+    return { statusCode: 405, body: 'Method Not Allowed' }
   }
 
-  try {
-    const formData = JSON.parse(event.body);
-    
-    // Log the received data for debugging
-    console.log('Received form data:', formData);
-    
-    // Forward the data to n8n
-    const response = await fetch('https://evaluaime.app.n8n.cloud/webhook/72e8d0cf-63f8-41ef-bc47-f5bb1f5e1b75', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
+  const payload = JSON.parse(event.body || '{}')
+  console.log('Received form data:', payload)
 
-    // Get the response from n8n
-    const responseData = await response.text();
-    console.log('n8n response:', responseData);
+  const { data, error } = await supabase
+    .from('sessions')
+    .insert({
+      name:      payload.name,
+      level:     payload.level,
+      native:    payload.native,
+      test_date: payload.test_date
+    })
+    .single()
 
-    return {
-      statusCode: 303, // Use 303 for redirect after POST
-      headers: {
-        'Location': '/?form_submitted=true',
-        'Cache-Control': 'no-cache'
-      },
-      body: 'Redirecting...'
-    };
-  } catch (error) {
-    console.error('Error:', error);
+  console.log('Supabase response:', { data, error })
+  if (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to submit form', details: error.message }),
-    };
+      body: JSON.stringify({ error: error.message })
+    }
   }
-};
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ redirectUrl: `/chat?sessionId=${data.id}` })
+  }
+}
