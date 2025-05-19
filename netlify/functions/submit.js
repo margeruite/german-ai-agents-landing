@@ -64,8 +64,9 @@ const checkRateLimit = (ip) => {
 // CORS headers
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS'
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, Accept',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
+  'Access-Control-Allow-Credentials': 'true'
 };
 
 exports.handler = async (event) => {
@@ -73,7 +74,10 @@ exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
-      headers: corsHeaders,
+      headers: {
+        ...corsHeaders,
+        'Content-Length': '0',
+      },
       body: ''
     };
   }
@@ -81,9 +85,15 @@ exports.handler = async (event) => {
   // Only allow POST requests
   if (event.httpMethod !== 'POST') {
     return {
-      statusCode: 405,
-      headers: corsHeaders,
-      body: JSON.stringify({ error: 'Method Not Allowed' })
+      statusCode: 200,
+      headers: {
+        ...corsHeaders,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        success: false,
+        error: 'Method Not Allowed' 
+      })
     };
   }
 
@@ -96,12 +106,13 @@ exports.handler = async (event) => {
     // Check rate limit
     if (!checkRateLimit(clientIP)) {
       return {
-        statusCode: 429,
+        statusCode: 200,
         headers: {
           ...corsHeaders,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ 
+          success: false,
           error: 'Too many requests. Please try again later.' 
         })
       };
@@ -113,12 +124,15 @@ exports.handler = async (event) => {
       payload = JSON.parse(event.body);
     } catch (e) {
       return {
-        statusCode: 400,
+        statusCode: 200,
         headers: {
           ...corsHeaders,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ error: 'Invalid JSON format' })
+        body: JSON.stringify({ 
+          success: false,
+          error: 'Invalid request format' 
+        })
       };
     }
 
@@ -126,12 +140,13 @@ exports.handler = async (event) => {
     const validationErrors = validateFormData(payload);
     if (validationErrors.length > 0) {
       return {
-        statusCode: 400,
+        statusCode: 200,
         headers: {
           ...corsHeaders,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ 
+          success: false,
           error: 'Validation failed', 
           details: validationErrors 
         })
