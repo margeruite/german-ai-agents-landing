@@ -1,4 +1,15 @@
-const fetch = require('node-fetch');
+const { createClient } = require('@supabase/supabase-js');
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY,
+  {
+    auth: {
+      persistSession: false
+    }
+  }
+);
 
 // Rate limiting setup (5 requests per minute per IP)
 const rateLimit = new Map();
@@ -7,31 +18,62 @@ const RATE_LIMIT_MAX = 5;
 
 // Helper function to validate form data
 const validateFormData = (data) => {
-  const requiredFields = ['name', 'level', 'native', 'date'];
+  const requiredFields = ['name', 'email', 'level', 'native_language', 'test_date'];
   const errors = [];
   
   requiredFields.forEach(field => {
-    if (!data[field] || data[field].trim() === '') {
+    if (!data[field] || String(data[field]).trim() === '') {
       errors.push(`Missing required field: ${field}`);
     }
   });
+
+  // Validate email format
+  if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+    errors.push('Invalid email format');
+  }
   
   return errors;
 };
 
-exports.handler = async (event) => {
-  // Set CORS headers
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS'
-  };
+// Helper function to check rate limit
+const checkRateLimit = (ip) => {
+  const now = Date.now();
+  const windowStart = now - RATE_LIMIT_WINDOW;
+  
+  // Clean up old entries
+  for (const [ipAddr, { timestamp }] of rateLimit.entries()) {
+    if (timestamp < windowStart) {
+      rateLimit.delete(ipAddr);
+    }
+  }
+  
+  const userRate = rateLimit.get(ip) || { count: 0, timestamp: now };
+  
+  if (userRate.count >= RATE_LIMIT_MAX) {
+    return false;
+  }
+  
+  rateLimit.set(ip, {
+    count: userRate.count + 1,
+    timestamp: now
+  });
+  
+  return true;
+};
 
-  // Handle preflight OPTIONS request
+// CORS headers
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS'
+};
+
+exports.handler = async (event) => {
+  // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
-      headers,
+      headers: corsHeaders,
       body: ''
     };
   }
@@ -40,85 +82,113 @@ exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
-      headers,
+      headers: corsHeaders,
       body: JSON.stringify({ error: 'Method Not Allowed' })
     };
   }
 
-
   try {
-    // Parse and validate form data
-    let formData;
+    // Get client IP for rate limiting
+    const clientIP = event.headers['client-ip'] || 
+                    event.headers['x-nf-client-connection-ip'] || 
+                    'unknown';
+    
+    // Check rate limit
+    if (!checkRateLimit(clientIP)) {
+      return {
+        statusCode: 429,
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          error: 'Too many requests. Please try again later.' 
+        })
+      };
+    }
+
+    // Parse request body
+    let payload;
     try {
-      formData = JSON.parse(event.body);
+      payload = JSON.parse(event.body);
     } catch (e) {
       return {
         statusCode: 400,
-        headers,
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify({ error: 'Invalid JSON format' })
       };
     }
 
-    // Validate required fields
-    const validationErrors = validateFormData(formData);
+    // Validate form data
+    const validationErrors = validateFormData(payload);
     if (validationErrors.length > 0) {
       return {
         statusCode: 400,
-        headers,
-        body: JSON.stringify({ error: 'Validation failed', details: validationErrors })
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          error: 'Validation failed', 
+          details: validationErrors 
+        })
       };
     }
 
-    // Log the received data for debugging
-    console.log('Form submission received:', formData);
-    
-    // Forward the data to n8n webhook
-    const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL || 'https://n8n-instance/webhook-url';
-    const response = await fetch(n8nWebhookUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: formData.name,
-        level: formData.level,
-        native: formData.native,
-        date: formData.date
-      }),
-    });
+    // Prepare data for Supabase
+    const submissionData = {
+      name: payload.name.trim(),
+      email: payload.email.trim().toLowerCase(),
+      german_level: payload.level,
+      native_language: payload.native_language,
+      test_date: payload.test_date,
+      created_at: new Date().toISOString(),
+      ip_address: clientIP,
+      user_agent: event.headers['user-agent'] || ''
+    };
 
-    if (!response.ok) {
-      throw new Error(`n8n API responded with status: ${response.status}`);
+    // Insert into Supabase
+    const { data, error } = await supabase
+      .from('submissions')
+      .insert([submissionData])
+      .select();
+
+    if (error) {
+      console.error('Supabase error:', error);
+      throw new Error('Failed to save submission to database');
     }
 
-    // Get the response from n8n
-    const responseData = await response.text();
-    console.log('n8n response received');
-
+    // Success response with CORS headers
     return {
       statusCode: 200,
       headers: {
-        ...headers,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ 
         success: true,
-        redirect: `/chat?name=${encodeURIComponent(formData.name)}&level=${encodeURIComponent(formData.level)}&native=${encodeURIComponent(formData.native)}&date=${encodeURIComponent(formData.date)}`
+        message: 'Form submitted successfully',
+        submission_id: data[0]?.id,
+        redirect: '/start'  // Add redirect URL that frontend expects
       })
     };
 
   } catch (error) {
-    console.error('Error processing form submission:', error);
+    console.error('Error processing submission:', error);
+    
     return {
       statusCode: 500,
       headers: {
-        ...headers,
+        ...corsHeaders,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ 
-        error: 'Failed to process form submission',
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        error: 'Internal server error',
+        message: process.env.NODE_ENV === 'development' ? error.message : undefined
       })
     };
-  }
-};
+  }}
