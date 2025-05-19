@@ -181,14 +181,16 @@ exports.handler = async (event) => {
     console.error('Error processing submission:', error);
     
     return {
-      statusCode: 500,
+      statusCode: 200, // Return 200 to prevent CORS issues
       headers: {
-        ...corsHeaders,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ 
-        error: 'Internal server error',
-        message: process.env.NODE_ENV === 'development' ? error.message : undefined
+        success: false,
+        error: 'Failed to process submission',
+        message: process.env.NODE_ENV === 'development' ? error.message : 'Please try again later'
       })
     };
   }}
