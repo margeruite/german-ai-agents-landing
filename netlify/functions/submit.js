@@ -13,15 +13,16 @@ exports.handler = async (event) => {
   const payload = JSON.parse(event.body || '{}')
   console.log('Received form data:', payload)
 
-  const { data, error } = await supabase
-    .from('sessions')
-    .insert({
-      name:      payload.name,
-      level:     payload.level,
-      native:    payload.native,
-      test_date: payload.test_date
-    })
-    .single()
+const { data, error } = await supabase
+  .from('sessions')
+  .insert({
+    name:       payload.name,
+    level:      payload.level,
+    native:     payload.native_language,
+    test_date:  payload.test_date
+  })
+  .single()
+
 
   console.log('Supabase response:', { data, error })
   if (error) {
